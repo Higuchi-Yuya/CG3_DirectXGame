@@ -14,7 +14,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int)
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
 	win->CreateGameWindow();
-		
+	
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(win);
@@ -29,6 +29,7 @@ int WINAPI WinMain(HINSTANCE,HINSTANCE,LPSTR,int)
 	
 	// 3Dオブジェクト静的初期化
 	Object3d::StaticInitialize(dxCommon->GetDevice(), WinApp::kWindowWidth, WinApp::kWindowHeight);
+
 #pragma endregion
 
 	// ゲームシーンの初期化
