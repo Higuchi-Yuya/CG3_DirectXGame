@@ -1,4 +1,4 @@
-#include "BasicShaderHeader.hlsli"
+#include "ParticleShaderHeader.hlsli"
 
 // 四角形の頂点数
 static const uint vnum = 4;
@@ -31,9 +31,11 @@ void main(
 
 	GSOutput element;// 出力頂点データ
 	for (uint i = 0; i < vnum; i++) {
-		
+		// 中心からのオフセットをビルボード回転（モデル座標）
+		float4 offset = mul(matBillboard, offset_array[i]);
+
 		// ワールド座標ベースで、ずらす
-		element.svpos = input[0].pos + offset_array[i];// 頂点座標をコピー
+		element.svpos = input[0].pos + offset;// 頂点座標をコピー
 		
 		// ビュー、射影変換
 		element.svpos = mul(mat, element.svpos);
