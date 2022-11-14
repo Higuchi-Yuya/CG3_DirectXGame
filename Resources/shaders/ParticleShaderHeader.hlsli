@@ -8,7 +8,8 @@ cbuffer cbuff0 : register(b0)
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体
 struct VSOutput
 {
-	float4 pos : POSITION; // システム用頂点座標
+	float4 pos : POSITION; // システム用頂点座
+	float scale : TEXCOORD;// スケール
 	//float3 normal :NORMAL; // 法線ベクトル
 	//float2 uv  :TEXCOORD; // uv値
 };
