@@ -6,6 +6,7 @@
 #include "Sprite.h"
 #include "ParticleManager.h"
 #include "DebugText.h"
+#include "Object3d.h"
 
 /// <summary>
 /// ゲームシーン
@@ -60,6 +61,7 @@ private: // メンバ変数
 	/// ゲームシーン用
 	/// </summary>
 	Sprite* spriteBG = nullptr;
+	Object3d* object3d[50];
 	ParticleManager* particleMan = nullptr;
 
 	Sprite* sprite1 = nullptr;

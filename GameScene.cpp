@@ -48,9 +48,14 @@ void GameScene::Initialize(DirectXCommon* dxCommon, Input* input)
 	// 3Dオブジェクト生成
 	srand(time(nullptr));
 
+	for (int i = 0; i < 50; i++) {
+		object3d[i] = Object3d::Create();
+		float X = rand() % (40 - 20), Z = rand() % (40 - 20);
+		object3d[i]->SetPosition({ X ,0, Z });
+		object3d[i]->Update();
+	}
+
 	particleMan = ParticleManager::Create();
-	//float X = rand() % (40 - 20), Z = rand() % (40 - 20);
-	//object3d[i]->SetPosition({ X ,0, Z });
 
 	for (int i = 0; i < 100; i++) {
 		// X,Y,Z全て{-5.0f,+5.0f}でランダムに分布
@@ -109,7 +114,14 @@ void GameScene::Update()
 		if (input->PushKey(DIK_D)) { ParticleManager::CameraMoveEyeVector({ +0.1f,0.0f,0.0f }); }
 		else if (input->PushKey(DIK_A)) { ParticleManager::CameraMoveEyeVector({ -0.1f,0.0f,0.0f }); }
 	}
-
+	// カメラ移動
+	if (input->PushKey(DIK_W) || input->PushKey(DIK_S) || input->PushKey(DIK_D) || input->PushKey(DIK_A))
+	{
+		if (input->PushKey(DIK_W)) { Object3d::CameraMoveEyeVector({ 0.0f,+1.0f,0.0f }); }
+		else if (input->PushKey(DIK_S)) { Object3d::CameraMoveEyeVector({ 0.0f,-1.0f,0.0f }); }
+		if (input->PushKey(DIK_D)) { Object3d::CameraMoveEyeVector({ +1.0f,0.0f,0.0f }); }
+		else if (input->PushKey(DIK_A)) { Object3d::CameraMoveEyeVector({ -1.0f,0.0f,0.0f }); }
+	}
 	// スペースキーを押していたら
 	if (input->TriggerKey(DIK_SPACE)) {
 		// 現在の座標を取得
@@ -147,10 +159,14 @@ void GameScene::Update()
 		}
 	}
 
-
+	for (int i = 0; i < 50; i++) {
+		object3d[i]->Update();
+	}
 
 	particleMan->Update();
 
+	debugText.Print("[W][A][S][D] CameraRotation", 20, 20, 1);
+	debugText.Print("[Space]      Particle", 20, 40, 1);
 }
 
 void GameScene::Draw()
@@ -162,7 +178,7 @@ void GameScene::Draw()
 	// 背景スプライト描画前処理
 	Sprite::PreDraw(cmdList);
 	// 背景スプライト描画
-	spriteBG->Draw();
+	//spriteBG->Draw();
 	//sprite1->Draw();
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
@@ -176,10 +192,16 @@ void GameScene::Draw()
 
 #pragma region 3Dオブジェクト描画
 	// 3Dオブジェクト描画前処理
+	Object3d::PreDraw(cmdList);
+	//3Dオブクジェクトの描画
+	for (int i = 0; i < 50; i++) {
+		object3d[i]->Draw();
+	}
+	Object3d::PostDraw();
+
 	ParticleManager::PreDraw(cmdList);
 
-	//3Dオブクジェクトの描画
-
+	
 	particleMan->Draw();
 
 	/// <summary>
@@ -188,6 +210,8 @@ void GameScene::Draw()
 
 	// 3Dオブジェクト描画後処理
 	ParticleManager::PostDraw();
+
+	
 #pragma endregion
 
 #pragma region 前景スプライト描画
